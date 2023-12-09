@@ -1,0 +1,58 @@
+- name: add repo
+  ansible.builtin.apt_repository:
+    repo: 'ppa:fish-shell/release-3'
+    state: present
+  become: true
+- name: install packages
+  ansible.builtin.apt: 
+    name: fish
+    state: present
+    update_cache: true
+  become: true
+- name: determine install location
+  command: which fish
+  register: fish
+- name: set default shell
+  become: true
+  user: 
+    name: "{{ ansible_user_id }}"
+    shell: "{{ fish.stdout }}"
+- name: link config
+  block:
+    - name: Ensure all configured dotfiles are links.
+      command: "ls -F {{ dotfiles_home }}/fish"
+      register: existing_dotfile_info
+      failed_when: false
+      check_mode: false
+      changed_when: false
+    - name: Remove existing dotfiles file if a replacement is being linked.
+      file:
+        path: "{{ dotfiles_home }}/fish"
+        state: absent
+      when: "'@' not in existing_dotfile_info.stdout"
+    - name: link config
+      ansible.builtin.file:
+        src: "{{ dotfiles_repo }}/fish/"
+        dest: "{{ dotfiles_home }}/fish"
+        state: link
+        force: true
+      when: "'@' not in existing_dotfile_info.stdout"
+- name: check if fisher is installed
+  stat:
+    path: "{{ dotfiles_home }}/fish/functions/fisher.fish"
+  register: fisher_installed
+- name: install fisher
+  shell: "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+  args:
+    executable: "{{ fish.stdout }}"
+  when: not fisher_installed.stat.exists
+- name: ensure fisher plugins list
+  shell: "git -C {{ dotfiles_repo }} restore fish/fish_plugins"
+- name: update fisher
+  shell: "fisher update"
+  args:
+    executable: "{{ fish.stdout }}"
+- name: init theme
+  shell: "tide configure --auto --style=Rainbow --prompt_colors='True color' --show_time='24-hour format' --rainbow_prompt_separators=Round --powerline_prompt_heads=Round --powerline_prompt_tails=Round --powerline_prompt_style='Two lines, character and frame' --prompt_connection=Disconnected --powerline_right_prompt_frame=Yes --prompt_connection_andor_frame_color=Dark --prompt_spacing=Sparse --icons='Many icons' --transient=Yes"
+  args:
+    executable: "{{ fish.stdout }}"

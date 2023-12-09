@@ -1,0 +1,5 @@
+- name: Ensure dotfiles repository is cloned locally.
+  git:
+    repo: "{{ dotfiles_repo_url }}"
+    dest: "{{ dotfiles_repo }}"
+    accept_newhostkey: true
