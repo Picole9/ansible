@@ -1,7 +1,9 @@
 # ansible
-Installieren via ansible
-Installation von ansible via `sh install.sh`
-example playbook: `ansible-playbook update.yaml { -i custom_inventoryfile }{ -l local } { --ask-become-pass }`
+ansible playbooks
+
+## usage
+* installation of ansible via `sh install.sh`
+* example playbook: `ansible-playbook update.yaml { -i custom_inventoryfile }{ -l local } { --ask-become-pass }`
 
 ## roles:
 * common: fishshell, nvim, ...
