@@ -10,5 +10,11 @@
   shell: "fisher update"
   args:
     executable: "{{ fish.stdout }}"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
 - name: update tldr
   shell: "tldr --update"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"

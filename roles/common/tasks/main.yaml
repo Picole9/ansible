@@ -19,6 +19,9 @@
   ansible.builtin.pip:
     name:
       - tldr
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
 - name: add GPG keys for nodejs
   become: true
   ansible.builtin.get_url:
@@ -26,6 +29,9 @@
     dest: /etc/apt/keyrings/nodesource.asc
     mode: '0644'
     force: true
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
 - name: add nodejs-repo
   become: true
   ansible.builtin.apt_repository:

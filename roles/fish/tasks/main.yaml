@@ -3,6 +3,9 @@
     repo: 'ppa:fish-shell/release-3'
     state: present
   become: true
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
 - name: install packages
   ansible.builtin.apt: 
     name: fish
@@ -45,6 +48,9 @@
   shell: "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
   args:
     executable: "{{ fish.stdout }}"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
   when: not fisher_installed.stat.exists
 - name: ensure fisher plugins list
   shell: "git -C {{ dotfiles_repo }} restore fish/fish_plugins"
@@ -52,7 +58,13 @@
   shell: "fisher update"
   args:
     executable: "{{ fish.stdout }}"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
 - name: init theme
   shell: "tide configure --auto --style=Rainbow --prompt_colors='True color' --show_time='24-hour format' --rainbow_prompt_separators=Round --powerline_prompt_heads=Round --powerline_prompt_tails=Round --powerline_prompt_style='Two lines, character and frame' --prompt_connection=Disconnected --powerline_right_prompt_frame=Yes --prompt_connection_andor_frame_color=Dark --prompt_spacing=Sparse --icons='Many icons' --transient=Yes"
   args:
     executable: "{{ fish.stdout }}"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
