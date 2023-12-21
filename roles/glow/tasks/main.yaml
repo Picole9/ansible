@@ -48,3 +48,4 @@
       src: "{{ dotfiles_repo }}/glow/"
       dest: "{{ dotfiles_home }}/glow"
       state: link
+    when: "'@' not in existing_dotfile_info.stdout"

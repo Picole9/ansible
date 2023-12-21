@@ -22,6 +22,7 @@
   environment:
     http_proxy: "{{ http_proxy }}"
     https_proxy: "{{ https_proxy }}"
+    PIP_BREAK_SYSTEM_PACKAGES: 1
 - name: add GPG keys for nodejs
   become: true
   ansible.builtin.get_url:

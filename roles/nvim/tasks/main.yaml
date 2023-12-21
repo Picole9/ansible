@@ -30,3 +30,4 @@
       src: "{{ dotfiles_repo }}/nvim/"
       dest: "{{ dotfiles_home }}/nvim"
       state: link
+    when: "'@' not in existing_dotfile_info.stdout"
