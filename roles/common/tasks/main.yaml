@@ -11,6 +11,7 @@
       - universal-ctags
       - ca-certificates
       - curl
+      - git
       - gnupg
       # python
       - python3-pip
