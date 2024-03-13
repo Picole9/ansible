@@ -1,7 +1,5 @@
-- name: include debian install process
-  import_tasks: debian.yaml
-  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu" 
+- import_tasks: debian.yaml
+  when: ansible_os_family == "Debian"
 
-- name: include debian install process
-  import_tasks: arch.yaml
-  when: ansible_distribution == "Archlinux"
+- import_tasks: arch.yaml
+  when: ansible_os_family == "Archlinux"
