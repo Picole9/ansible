@@ -29,4 +29,4 @@ esac
 
 # create inventory
 sudo mkdir /etc/ansible
-sudo copy hosts /etc/ansible/
+sudo cp hosts /etc/ansible/
