@@ -5,7 +5,7 @@
       - bat # cat
       - exa # ls
       - ripgrep # grep
-      - fd-find # find
+      - fd # find
       - btop # htop
       - universal-ctags
       - ca-certificates
