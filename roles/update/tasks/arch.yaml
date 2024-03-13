@@ -1,0 +1,20 @@
+- name: pacman upgrade
+  become: true
+  community.general.pacman:
+    update_cache: true
+    upgrade: true
+- name: determine fish location
+  command: which fish
+  register: fish
+- name: update fisher
+  shell: "fisher update"
+  args:
+    executable: "{{ fish.stdout }}"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
+- name: update tldr
+  shell: "tldr --update"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"

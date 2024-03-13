@@ -1,0 +1,20 @@
+- name: apt upgrade
+  become: true
+  apt:
+    update_cache: yes
+    upgrade: 'yes'
+- name: determine fish location
+  command: which fish
+  register: fish
+- name: update fisher
+  shell: "fisher update"
+  args:
+    executable: "{{ fish.stdout }}"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
+- name: update tldr
+  shell: "tldr --update"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
