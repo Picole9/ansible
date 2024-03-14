@@ -13,7 +13,7 @@
       - curl
       - git
       - gnupg
-      # python
+      - tar
       - python3-pip
       - python3-venv
 - name: install pip-packages

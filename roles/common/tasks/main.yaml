@@ -6,13 +6,17 @@
 
 - name: install font
   block:
+    - name: ensure font folder exist
+      file:
+        path: "/home/{{ ansible_user_id }}/.local/share/fonts"
+        state: directory
     - name: download font
       unarchive:
-        src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hasklig.zip
-        dest: "/home/{{ user }}/.local/share/fonts"
+        src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hasklig.tar.xz
+        dest: "/home/{{ ansible_user_id }}/.local/share/fonts"
         remote_src: yes
       environment:
-        http_proxy: "{{ proxy }}"
-        https_proxy: "{{ proxy }}"
+        http_proxy: "{{ http_proxy }}"
+        https_proxy: "{{ https_proxy }}"
     - name: update font-cache
       shell: "fc-cache -f"

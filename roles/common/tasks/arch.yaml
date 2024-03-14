@@ -15,5 +15,6 @@
       - tldr
       - nodejs
       - npm
+      - tar
       - python-pip
       - python-virtualenv
