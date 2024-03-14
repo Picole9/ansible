@@ -1,0 +1,5 @@
+dotfiles_home: ~/.config
+dotfiles_repo: ~/git/dotfiles
+dotfiles_repo_url: git@github.com:Picole9/dotfiles.git
+http_proxy: ""
+https_proxy: ""

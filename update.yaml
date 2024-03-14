@@ -1,7 +1,4 @@
 - name: update
-  vars:
-    http_proxy: ""
-    https_proxy: ""
   hosts: all
   roles:
     - update

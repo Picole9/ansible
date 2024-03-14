@@ -14,5 +14,6 @@
       - gnupg
       - tldr
       - nodejs
+      - npm
       - python-pip
       - python-virtualenv
