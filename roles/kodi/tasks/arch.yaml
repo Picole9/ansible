@@ -1,0 +1,36 @@
+- name: install packages
+  become: true
+  community.general.pacman:
+    name:
+      - kodi
+      - kodi-addon-inputstream-adaptive
+      - base-devel
+      - libcec
+      - libbluray
+      - libaacs
+      - jre-openjdk # dvd-menu
+- name: install keys
+  block:
+    - name: ensure folder exist
+      file:
+        path: "/home/{{ ansible_user_id }}/.config/aacs"
+        state: directory
+    - name: download db
+      get_url:
+        url: https://vlc-bluray.whoknowsmy.name/files/KEYDB.cfg
+        dest: "/home/{{ ansible_user_id }}/.config/aacs/KEYDB.cfg"
+      environment:
+        http_proxy: "{{ http_proxy }}"
+        https_proxy: "{{ https_proxy }}"
+# install aur:
+# kodi-pvr-addon-iptvsimple
+# -----------
+# install in kodi:
+# install from zip: wget https://repo.kodinerds.net/addons/repository.kodinerds/repository.kodinerds-7.0.1.4.zip
+# repos: kodinerds, astagnait, sandman79s
+# programs: tubecast
+# pvr: iptv simple client
+# video: amazon vod, mediathek direkt, netflix, twitch, youtube
+# wetter: multi weather
+# -----------
+# import $HOME/.kodi/userdata/addon_data
