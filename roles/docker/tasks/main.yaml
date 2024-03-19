@@ -5,6 +5,7 @@
   when: ansible_os_family == "Archlinux"
 
 - name: check docker is active
+  become: true
   service:
     name: docker
     state: started
