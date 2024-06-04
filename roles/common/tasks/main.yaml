@@ -14,7 +14,7 @@
       unarchive:
         src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hasklig.tar.xz
         dest: "/home/{{ ansible_user_id }}/.local/share/fonts"
-        remote_src: yes
+        remote_src: true
       environment:
         http_proxy: "{{ http_proxy }}"
         https_proxy: "{{ https_proxy }}"
