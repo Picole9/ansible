@@ -3,3 +3,11 @@
     repo: "{{ dotfiles_repo_url }}"
     dest: "{{ dotfiles_repo }}"
     accept_newhostkey: true
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
+
+- name: create config dir
+  ansible.builtin.file:
+    path: "{{ dotfiles_home }}"
+    state: directory
