@@ -9,7 +9,7 @@
   register: fish
 - name: set default shell
   become: true
-  user: 
+  user:
     name: "{{ ansible_user_id }}"
     shell: "{{ fish.stdout }}"
 - name: link config
