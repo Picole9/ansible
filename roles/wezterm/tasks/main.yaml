@@ -1,0 +1,31 @@
+- import_tasks: debian.yaml
+  when: ansible_os_family == "Debian"
+
+- import_tasks: arch.yaml
+  when: ansible_os_family == "Archlinux"
+
+- name: link config
+  block:
+    - name: Create configdir
+      ansible.builtin.file:
+        path: "{{ dotfiles_home }}/wezterm"
+        state: directory
+    - name: Ensure configured dotfiles are links.
+      command: "ls -F {{ dotfiles_home }}/wezterm/wezterm.lua"
+      register: existing_dotfile_info
+      failed_when: false
+      check_mode: false
+      changed_when: false
+    - name: Remove existing dotfiles file if a replacement is being linked.
+      file:
+        path: "{{ dotfiles_home }}/wezterm/wezterm.lua"
+        state: absent
+      when: "'@' not in existing_dotfile_info.stdout"
+    - name: Link config
+      ansible.builtin.file:
+        src: "{{ dotfiles_repo }}/.wezterm.lua"
+        dest: "{{ dotfiles_home }}/wezterm/wezterm.lua"
+        state: link
+      when: "'@' not in existing_dotfile_info.stdout"
+- name: Add fish autocompletion
+  shell: wezterm shell-completion --shell fish > {{ dotfiles_home }}/fish/completions/wezterm.fish
