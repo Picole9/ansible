@@ -3,7 +3,7 @@
   community.general.pacman:
     name:
       - bat # cat
-      - exa # ls
+      - eza # ls
       - ripgrep # grep
       - fd # find
       - btop # htop

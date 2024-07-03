@@ -4,7 +4,7 @@
     update_cache: yes
     name:
       - bat # cat
-      - exa # ls
+      - eza # ls
       - ripgrep # grep
       - fd-find # find
       - btop # htop
@@ -29,7 +29,7 @@
   ansible.builtin.get_url:
     url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
     dest: /etc/apt/keyrings/nodesource.asc
-    mode: '0644'
+    mode: "0644"
     force: true
   environment:
     http_proxy: "{{ http_proxy }}"
