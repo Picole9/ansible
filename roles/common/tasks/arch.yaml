@@ -13,7 +13,6 @@
       - git
       - gnupg
       - tldr
-      - nodejs
       - npm
       - tar
       - python-pip

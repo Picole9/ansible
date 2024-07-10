@@ -13,6 +13,7 @@
       - curl
       - git
       - gnupg
+      - npm
       - tar
       - python3-pip
       - python3-venv
@@ -24,25 +25,3 @@
     http_proxy: "{{ http_proxy }}"
     https_proxy: "{{ https_proxy }}"
     PIP_BREAK_SYSTEM_PACKAGES: 1
-- name: add GPG keys for nodejs
-  become: true
-  ansible.builtin.get_url:
-    url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
-    dest: /etc/apt/keyrings/nodesource.asc
-    mode: "0644"
-    force: true
-  environment:
-    http_proxy: "{{ http_proxy }}"
-    https_proxy: "{{ https_proxy }}"
-- name: add nodejs-repo
-  become: true
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/nodesource.asc] https://deb.nodesource.com/node_{{ nodejs_version }}.x nodistro main"
-    filename: nodesource
-    state: present
-- name: install nodejs
-  become: true
-  apt:
-    name:
-      - nodejs
-    update_cache: true
