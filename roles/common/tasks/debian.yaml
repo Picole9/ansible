@@ -1,11 +1,11 @@
 - name: install apt packages
   become: true
   apt:
-    update_cache: yes
+    update_cache: true
     name:
       - bat # cat
-      - eza # ls
       - ripgrep # grep
+      - eza # ls
       - fd-find # find
       - btop # htop
       - universal-ctags
@@ -17,7 +17,7 @@
       - tar
       - python3-pip
       - python3-venv
-- name: install pip-packages
+- name: Install pip-packages
   ansible.builtin.pip:
     name:
       - tldr
@@ -25,3 +25,28 @@
     http_proxy: "{{ http_proxy }}"
     https_proxy: "{{ https_proxy }}"
     PIP_BREAK_SYSTEM_PACKAGES: 1
+- name: Install nodejs
+  when: ansible_distribution == "Ubuntu" && ansible_distribution_major_version < 24
+  block:
+    - name: Add GPG keys for nodejs
+      become: true
+      ansible.builtin.get_url:
+        url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+        dest: /etc/apt/keyrings/nodesource.asc
+        mode: "0644"
+        force: true
+      environment:
+        http_proxy: "{{ http_proxy }}"
+        https_proxy: "{{ https_proxy }}"
+    - name: Add nodejs-repo
+      become: true
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/nodesource.asc] https://deb.nodesource.com/node_{{ nodejs_version }}.x nodistro main"
+        filename: nodesource
+        state: present
+    - name: Install nodejs
+      become: true
+      apt:
+        name:
+          - nodejs
+        update_cache: true
