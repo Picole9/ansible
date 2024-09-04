@@ -1,0 +1,8 @@
+- name: run role
+  hosts: all
+  gather_facts: true
+  roles:
+    - "{{ role }}"
+  vars:
+    http_proxy: ""
+    https_proxy: ""
