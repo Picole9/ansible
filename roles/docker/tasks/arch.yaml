@@ -1,5 +1,5 @@
-- name: install packages
-  community.general.pacman: 
+- name: Install packages
+  community.general.pacman:
     name:
       - docker
       - docker-compose

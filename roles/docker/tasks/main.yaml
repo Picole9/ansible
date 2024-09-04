@@ -1,23 +1,26 @@
-- import_tasks: ubuntu.yaml
-  when: ansible_distribution == "Ubuntu"
+- name: Install packages
+  block:
+    - name: Debian specific
+      ansible.builtin.import_tasks: debian.yaml
+      when: ansible_os_family == "Debian"
+    - name: Arch specific
+      ansible.builtin.import_tasks: arch.yaml
+      when: ansible_os_family == "Archlinux"
 
-- import_tasks: arch.yaml
-  when: ansible_os_family == "Archlinux"
-
-- name: check docker is active
+- name: Check docker is active
   become: true
-  service:
+  ansible.builtin.service:
     name: docker
     state: started
     enabled: true
-- name: ensure group "docker"
+- name: Ensure group "docker"
   become: true
   ansible.builtin.group:
     name: docker
     state: present
-- name: adding user to docker group
+- name: Adding user to docker group
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     groups: docker
     append: true

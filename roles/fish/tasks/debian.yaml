@@ -1,13 +1,5 @@
-- name: add repo
-  ansible.builtin.apt_repository:
-    repo: 'ppa:fish-shell/release-3'
-    state: present
-  become: true
-  environment:
-    http_proxy: "{{ http_proxy }}"
-    https_proxy: "{{ https_proxy }}"
-- name: install packages
-  ansible.builtin.apt: 
+- name: Install packages
+  ansible.builtin.apt:
     name: fish
     state: present
     update_cache: true
