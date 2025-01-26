@@ -1,0 +1,26 @@
+- name: Install packages
+  block:
+    - name: Debian specific
+      ansible.builtin.import_tasks: debian.yaml
+      when: ansible_os_family == "Debian"
+    - name: Arch specific
+      ansible.builtin.import_tasks: arch.yaml
+      when: ansible_os_family == "Archlinux"
+
+- name: Install font
+  block:
+    - name: Ensure font folder exist
+      ansible.builtin.file:
+        path: "/home/{{ ansible_user_id }}/.local/share/fonts"
+        state: directory
+        mode: "0777"
+    - name: Download font
+      ansible.builtin.unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hasklig.tar.xz
+        dest: "/home/{{ ansible_user_id }}/.local/share/fonts"
+        remote_src: true
+      environment:
+        http_proxy: "{{ http_proxy }}"
+        https_proxy: "{{ https_proxy }}"
+    - name: Update font-cache
+      ansible.builtin.command: "fc-cache -f"

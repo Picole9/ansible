@@ -1,0 +1,24 @@
+- name: Install packages
+  block:
+    - name: Add repo
+      ansible.builtin.apt_repository:
+        repo: "ppa:neovim-ppa/unstable"
+        state: present
+      become: true
+      environment:
+        http_proxy: "{{ http_proxy }}"
+        https_proxy: "{{ https_proxy }}"
+    - name: Install packages
+      ansible.builtin.apt:
+        name:
+          - curl
+          - git
+          - gzip
+          - neovim
+          - npm
+          - tar
+          - universal-ctags
+          - unzip
+        state: present
+        update_cache: true
+      become: true

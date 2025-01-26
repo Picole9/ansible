@@ -1,0 +1,8 @@
+- name: install common server packages
+  hosts: all
+  gather_facts: true
+  roles:
+    - docker
+  vars:  
+    http_proxy: ""
+    https_proxy: ""

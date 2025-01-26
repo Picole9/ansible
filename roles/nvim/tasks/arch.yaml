@@ -1,0 +1,13 @@
+- name: Install packages
+  community.general.pacman:
+    name:
+      - curl
+      - git
+      - gzip
+      - neovim
+      - npm
+      - tar
+      - universal-ctags
+      - unzip
+    state: present
+  become: true

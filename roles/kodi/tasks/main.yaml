@@ -1,0 +1,19 @@
+- name: Arch-specific
+  ansible.builtin.import_tasks: arch.yaml
+  when: ansible_os_family == "Archlinux"
+
+- name: Install keys
+  block:
+    - name: Ensure folder exist
+      ansible.builtin.file:
+        path: "{{ dotfiles_home }}/aacs"
+        state: directory
+        mode: "0777"
+    - name: Download db
+      ansible.builtin.get_url:
+        url: https://vlc-bluray.whoknowsmy.name/files/KEYDB.cfg
+        dest: "/home/{{ ansible_user_id }}/.config/aacs/KEYDB.cfg"
+        mode: "0777"
+      environment:
+        http_proxy: "{{ http_proxy }}"
+        https_proxy: "{{ https_proxy }}"

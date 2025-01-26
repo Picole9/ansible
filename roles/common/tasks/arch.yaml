@@ -1,0 +1,16 @@
+- name: Install packages
+  become: true
+  community.general.pacman:
+    name:
+      - bat # cat
+      - btop # htop
+      - ca-certificates
+      - curl
+      - eza # ls
+      - fd # find
+      - git
+      - gnupg
+      - tldr
+      - python-pip
+      - python-virtualenv
+      - ripgrep # grep

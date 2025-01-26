@@ -1,0 +1,4 @@
+- name: Install packages
+  community.general.flatpak:
+    name: org.wezfurlong.wezterm
+    state: present

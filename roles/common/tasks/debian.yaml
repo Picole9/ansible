@@ -1,0 +1,24 @@
+- name: Install packages
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    name:
+      - bat # cat
+      - btop # htop
+      - ca-certificates
+      - curl
+      - eza # ls
+      - fd-find # find
+      - git
+      - gnupg
+      - python3-pip
+      - python3-venv
+      - ripgrep # grep
+- name: Install pip-packages
+  ansible.builtin.pip:
+    name:
+      - tldr
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
+    PIP_BREAK_SYSTEM_PACKAGES: "1"

@@ -1,0 +1,26 @@
+- name: Debian-specific updates
+  ansible.builtin.import_tasks: debian.yaml
+  when: ansible_os_family == "Debian"
+
+- name: Arch-spefic updates
+  ansible.builtin.import_tasks: arch.yaml
+  when: ansible_os_family == "Archlinux"
+
+- name: Determine fish location
+  ansible.builtin.command: which fish
+  register: fish
+  changed_when: false
+
+- name: Update fisher
+  ansible.builtin.shell: "fisher update"
+  args:
+    executable: "{{ fish.stdout }}"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
+
+- name: Update tldr
+  ansible.builtin.shell: "tldr --update"
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"

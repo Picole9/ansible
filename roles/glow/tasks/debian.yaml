@@ -1,0 +1,32 @@
+- name: Install packages
+  block:
+    - name: Install dependencies
+      become: true
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+        update_cache: true
+        state: present
+    - name: Add repo
+      become: true
+      ansible.builtin.get_url:
+        url: https://repo.charm.sh/apt/gpg.key
+        dest: /etc/apt/keyrings/charm.asc
+        mode: "0644"
+        force: true
+      environment:
+        http_proxy: "{{ http_proxy }}"
+        https_proxy: "{{ https_proxy }}"
+    - name: Add charm repo
+      become: true
+      ansible.builtin.apt_repository:
+        filename: charm
+        repo: deb [signed-by=/etc/apt/keyrings/charm.asc] https://repo.charm.sh/apt/ * *
+        state: present
+    - name: Install glow
+      become: true
+      ansible.builtin.apt:
+        name: glow
+        update_cache: true

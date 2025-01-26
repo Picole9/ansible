@@ -1,0 +1,84 @@
+- name: Install packages
+  block:
+    - name: Debian specific
+      ansible.builtin.import_tasks: debian.yaml
+      when: ansible_os_family == "Debian"
+    - name: Arch specific
+      ansible.builtin.import_tasks: arch.yaml
+      when: ansible_os_family == "Archlinux"
+
+- name: Determine install location
+  ansible.builtin.command: which fish
+  register: fish
+  changed_when: false
+
+- name: Set default shell
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: "{{ fish.stdout }}"
+
+- name: Configure fish
+  block:
+    - name: Clone dotfiles
+      ansible.builtin.import_role:
+        name: dotfiles
+    - name: Ensure all configured dotfiles are links.
+      ansible.builtin.command: "ls -F {{ dotfiles_home }}/fish"
+      register: existing_dotfile_info
+      changed_when: false
+    - name: Remove old dotfiles
+      ansible.builtin.file:
+        path: "{{ dotfiles_home }}/fish"
+        state: absent
+      when: "'@' not in existing_dotfile_info.stdout"
+    - name: Link config
+      ansible.builtin.file:
+        src: "{{ dotfiles_repo }}/fish"
+        dest: "{{ dotfiles_home }}/fish"
+        state: link
+        force: true
+      when: "'@' not in existing_dotfile_info.stdout"
+
+- name: Check if fisher is installed
+  ansible.builtin.stat:
+    path: "{{ dotfiles_home }}/fish/functions/fisher.fish"
+  register: fisher_installed
+
+- name: Install fisher
+  when: not fisher_installed.stat.exists
+  block:
+    - name: Install fisher
+      ansible.builtin.shell: "set -o pipefail && curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+      args:
+        executable: "{{ fish.stdout }}"
+      environment:
+        http_proxy: "{{ http_proxy }}"
+        https_proxy: "{{ https_proxy }}"
+    - name: Ensure fisher plugins list
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo_url }}"
+        dest: "{{ dotfiles_repo }}"
+        version: main
+    - name: Update fisher
+      ansible.builtin.shell: fisher update
+      args:
+        executable: "{{ fish.stdout }}"
+      environment:
+        http_proxy: "{{ http_proxy }}"
+        https_proxy: "{{ https_proxy }}"
+    - name: Configure theme
+      ansible.builtin.shell: "{{ item }}"
+      args:
+        executable: "{{ fish.stdout }}"
+      loop:
+        - "tide configure --auto --style=Rainbow --prompt_colors='True color' --show_time='24-hour format' --rainbow_prompt_separators=Round --powerline_prompt_heads=Round --powerline_prompt_tails=Round --powerline_prompt_style='Two lines, character and frame' --prompt_connection=Disconnected --powerline_right_prompt_frame=Yes --prompt_connection_andor_frame_color=Dark --prompt_spacing=Sparse --icons='Many icons' --transient=Yes"
+        - "set -U tide_right_prompt_items status cmd_duration jobs direnv node python rustc java php pulumi ruby go gcloud kubectl distrobox toolbox terraform aws nix_shell crystal elixir zig time"
+        - "set -U tide_left_prompt_items os context pwd git newline character"
+        - "set -U tide_git_icon "
+
+        # - "set -U tide_pwd_bg_color '#47787b'"
+        # - "set -U tide_pwd_color '#c1bb9f'"
+        - "set -U tide_context_bg_color '#295715'"
+        - "set -U tide_context_color_root '#F06292'"
+        - "set -U tide_context_color_ssh '#e2d6af'"
