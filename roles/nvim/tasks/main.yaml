@@ -16,6 +16,7 @@
       ansible.builtin.command: "ls -F {{ dotfiles_home }}/nvim"
       register: existing_dotfile_info
       changed_when: false
+      ignore_errors: true
     - name: Remove old dotfiles
       ansible.builtin.file:
         path: "{{ dotfiles_home }}/nvim"
