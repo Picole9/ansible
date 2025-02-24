@@ -16,7 +16,7 @@
       ansible.builtin.command: "ls -F {{ dotfiles_home }}/glow"
       register: existing_dotfile_info
       changed_when: false
-      ignore_errors: true
+      failed_when: false
     - name: Remove old dotfiles
       ansible.builtin.file:
         path: "{{ dotfiles_home }}/glow"
