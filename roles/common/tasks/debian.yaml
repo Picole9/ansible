@@ -7,7 +7,6 @@
       - btop # htop
       - ca-certificates
       - curl
-      - eza # ls
       - fd-find # find
       - git
       - gnupg
@@ -22,3 +21,20 @@
     http_proxy: "{{ http_proxy }}"
     https_proxy: "{{ https_proxy }}"
     PIP_BREAK_SYSTEM_PACKAGES: "1"
+- name: Install eza # ls
+  block:
+    - name: Check for eza
+      ansible.builtin.command: apt-cache policy eza
+      register: eza_exists
+      changed_when: false
+      failed_when: false
+    - name: Install eza
+      become: true
+      ansible.builtin.apt:
+        name: eza
+      when: "'Candidate' in eza_exists.stdout"
+    - name: Install exa if eza does not exist
+      become: true
+      ansible.builtin.apt:
+        name: exa
+      when: "'Candidate' not in eza_exists.stdout"
