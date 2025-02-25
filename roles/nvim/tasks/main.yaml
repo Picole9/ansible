@@ -7,24 +7,8 @@
       ansible.builtin.import_tasks: arch.yaml
       when: ansible_os_family == "Archlinux"
 
-- name: Configure nvim
-  block:
-    - name: Clone dotfiles
-      ansible.builtin.import_role:
-        name: dotfiles
-    - name: Ensure all configured dotfiles are links.
-      ansible.builtin.command: "ls -F {{ dotfiles_home }}/nvim"
-      register: existing_dotfile_info
-      changed_when: false
-      failed_when: false
-    - name: Remove old dotfiles
-      ansible.builtin.file:
-        path: "{{ dotfiles_home }}/nvim"
-        state: absent
-      when: "'@' not in existing_dotfile_info.stdout"
-    - name: Link config
-      ansible.builtin.file:
-        src: "{{ dotfiles_repo }}/nvim"
-        dest: "{{ dotfiles_home }}/nvim"
-        state: link
-      when: "'@' not in existing_dotfile_info.stdout"
+- name: Set config
+  ansible.builtin.import_role:
+    name: dotfiles
+  vars:
+    dotfiles_link_config: nvim

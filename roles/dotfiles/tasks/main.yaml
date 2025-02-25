@@ -10,6 +10,26 @@
 
 - name: Create config dir
   ansible.builtin.file:
-    path: "{{ dotfiles_home }}"
+    path: "{{ ansible_env.HOME }}/.config"
     state: directory
     mode: "0777"
+
+- name: Link config
+  when: dotfiles_link_config
+  block:
+    - name: Ensure all configured dotfiles are links.
+      ansible.builtin.command: "ls -F {{ ansible_env.HOME }}/.config/{{ dotfiles_link_config }}"
+      register: existing_dotfile_info
+      changed_when: false
+      failed_when: false
+    - name: Remove old dotfiles
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.config/{{ dotfiles_link_config }}"
+        state: absent
+      when: "'@' not in existing_dotfile_info.stdout"
+    - name: Link config
+      ansible.builtin.file:
+        src: "{{ dotfiles_repo }}/{{ dotfiles_link_config_name | default(dotfiles_link_config) }}"
+        dest: "{{ ansible_env.HOME }}/.config/{{ dotfiles_link_config }}"
+        state: link
+      when: "'@' not in existing_dotfile_info.stdout"

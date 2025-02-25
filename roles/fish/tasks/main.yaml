@@ -18,32 +18,15 @@
     name: "{{ ansible_user_id }}"
     shell: "{{ fish.stdout }}"
 
-- name: Configure fish
-  block:
-    - name: Clone dotfiles
-      ansible.builtin.import_role:
-        name: dotfiles
-    - name: Ensure all configured dotfiles are links.
-      ansible.builtin.command: "ls -F {{ dotfiles_home }}/fish"
-      register: existing_dotfile_info
-      changed_when: false
-      failed_when: false
-    - name: Remove old dotfiles
-      ansible.builtin.file:
-        path: "{{ dotfiles_home }}/fish"
-        state: absent
-      when: "'@' not in existing_dotfile_info.stdout"
-    - name: Link config
-      ansible.builtin.file:
-        src: "{{ dotfiles_repo }}/fish"
-        dest: "{{ dotfiles_home }}/fish"
-        state: link
-        force: true
-      when: "'@' not in existing_dotfile_info.stdout"
+- name: Set config
+  ansible.builtin.import_role:
+    name: dotfiles
+  vars:
+    dotfiles_link_config: fish
 
 - name: Check if fisher is installed
   ansible.builtin.stat:
-    path: "{{ dotfiles_home }}/fish/functions/fisher.fish"
+    path: "{{ ansible_env.HOME }}/.config/fish/functions/fisher.fish"
   register: fisher_installed
 
 - name: Install fisher

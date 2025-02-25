@@ -7,25 +7,8 @@
       ansible.builtin.import_tasks: arch.yaml
       when: ansible_os_family == "Archlinux"
 
-- name: Configure glow
-  block:
-    - name: Clone dotfiles
-      ansible.builtin.import_role:
-        name: dotfiles
-    - name: Ensure all configured dotfiles are links.
-      ansible.builtin.command: "ls -F {{ dotfiles_home }}/glow"
-      register: existing_dotfile_info
-      changed_when: false
-      failed_when: false
-    - name: Remove old dotfiles
-      ansible.builtin.file:
-        path: "{{ dotfiles_home }}/glow"
-        state: absent
-      when: "'@' not in existing_dotfile_info.stdout"
-    - name: Link config
-      ansible.builtin.file:
-        src: "{{ dotfiles_repo }}/glow"
-        dest: "{{ dotfiles_home }}/glow"
-        state: link
-        force: true
-      when: "'@' not in existing_dotfile_info.stdout"
+- name: Set config
+  ansible.builtin.import_role:
+    name: dotfiles
+  vars:
+    dotfiles_link_config: glow
