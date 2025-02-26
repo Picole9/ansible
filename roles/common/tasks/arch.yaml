@@ -1,6 +1,7 @@
 - name: Install packages
   become: true
   community.general.pacman:
+    update_cache: true
     name:
       - bat # cat
       - btop # htop
