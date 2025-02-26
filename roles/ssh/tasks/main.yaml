@@ -1,6 +1,12 @@
+- name: Ensure .ssh-folder
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+    mode: "0700"
+
 - name: Create ssh key for user
   community.crypto.openssh_keypair:
-    path: "/home/{{ ansible_user_id }}/.ssh/id_rsa"
+    path: "{{ ansible_env.HOME }}/.ssh/id_rsa"
     size: 4096
 
 - name: Copy id
