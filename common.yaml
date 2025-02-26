@@ -1,6 +1,7 @@
 - name: install common packages
   hosts: all
   roles:
+    - update
     - common
     - glow
     - nvim
