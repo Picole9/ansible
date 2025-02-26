@@ -13,6 +13,7 @@
       - python3-pip
       - python3-venv
       - ripgrep # grep
+      - software-properties-common
 - name: Install pip-packages
   ansible.builtin.pip:
     name:
