@@ -7,7 +7,12 @@
       ansible.builtin.import_tasks: arch.yaml
       when: ansible_os_family == "Archlinux"
 
+- name: Gather packages facts
+  ansible.builtin.package_facts:
+    manager: auto
+
 - name: Install font
+  when: "'fc-cache' in ansible_facts.packages"
   block:
     - name: Ensure font folder exist
       ansible.builtin.file:
