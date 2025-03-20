@@ -7,14 +7,20 @@
       ansible.builtin.import_tasks: arch.yaml
       when: ansible_os_family == "Archlinux"
 
+- name: Ensure config folder exist
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/wezterm"
+    state: directory
+    mode: "0777"
+
 - name: Set config
   ansible.builtin.import_role:
     name: dotfiles
   vars:
     dotfiles_link_config: wezterm/wezterm.lua
-    dotfiles_link_config_name: wezterm.lua
+    dotfiles_link_config_name: .wezterm.lua
 
 - name: Add fish autocompletion
-  ansible.builtin.shell: "wezterm shell-completion --shell fish > {{ ansible_env }}/.config/fish/completions/wezterm.fish"
+  ansible.builtin.shell: "wezterm shell-completion --shell fish > {{ ansible_env.HOME }}/.config/fish/completions/wezterm.fish"
   args:
-    creates: "{{ ansible_env }}/.config/fish/completions/wezterm.fish"
+    creates: "{{ ansible_env.HOME }}/.config/fish/completions/wezterm.fish"

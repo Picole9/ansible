@@ -9,6 +9,7 @@
 - name: Gather the package facts
   ansible.builtin.package_facts:
     manager: auto
+  failed_when: false
 
 - name: Update fish if exists
   when: "'fish' in ansible_facts.packages"

@@ -16,13 +16,13 @@
   block:
     - name: Ensure font folder exist
       ansible.builtin.file:
-        path: "/home/{{ ansible_user_id }}/.local/share/fonts"
+        path: "{{ ansible_env.HOME }}/.local/share/fonts"
         state: directory
         mode: "0777"
     - name: Download font
       ansible.builtin.unarchive:
         src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hasklig.tar.xz
-        dest: "/home/{{ ansible_user_id }}/.local/share/fonts"
+        dest: "{{ ansible_env.HOME }}/.local/share/fonts"
         remote_src: true
       environment:
         http_proxy: "{{ http_proxy }}"
