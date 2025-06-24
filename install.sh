@@ -31,4 +31,4 @@ esac
 sudo mkdir /etc/ansible
 sudo cp hosts /etc/ansible/
 sudo touch /etc/ansible/ansible.cfg
-ansible-config init --disabled >ansible.cfg
+sudo ansible-config init --disabled >/etc/ansible/ansible.cfg
