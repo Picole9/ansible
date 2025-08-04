@@ -1,0 +1,6 @@
+- name: Install packages
+  community.general.pacman:
+    name:
+      - tealdeer
+    state: present
+  become: true

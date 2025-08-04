@@ -1,0 +1,9 @@
+- name: Install packages
+  block:
+    - name: Install packages
+      ansible.builtin.apt:
+        name:
+          - tealdeer
+        state: present
+        update_cache: true
+      become: true

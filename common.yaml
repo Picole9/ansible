@@ -3,6 +3,7 @@
   roles:
     - update
     - common
-    - glow
+    - tldr
     - nvim
+    - glow
     - fish
