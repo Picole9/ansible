@@ -11,7 +11,8 @@
       - fd # find
       - git
       - gnupg
-      - tldr
+      - tealdeer # tldr
       - python-pip
       - python-virtualenv
       - ripgrep # grep
+      - otf-hasklig-nerd
