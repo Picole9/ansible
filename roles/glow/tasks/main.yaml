@@ -1,4 +1,5 @@
 - name: Install packages
+  tags: install
   block:
     - name: Debian specific
       ansible.builtin.import_tasks: debian.yaml
@@ -8,6 +9,7 @@
       when: ansible_os_family == "Archlinux"
 
 - name: Set config
+  tags: configure
   ansible.builtin.import_role:
     name: dotfiles
   vars:

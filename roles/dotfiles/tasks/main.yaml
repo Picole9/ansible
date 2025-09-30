@@ -4,9 +4,6 @@
     dest: "{{ dotfiles_repo }}"
     version: main
     accept_newhostkey: true
-  environment:
-    http_proxy: "{{ http_proxy }}"
-    https_proxy: "{{ https_proxy }}"
 
 - name: Create config dir
   ansible.builtin.file:

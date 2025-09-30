@@ -1,15 +1,18 @@
 - name: Ensure .ssh-folder
+  tags: configure
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh"
     state: directory
     mode: "0700"
 
 - name: Create ssh key for user
+  tags: configure
   community.crypto.openssh_keypair:
     path: "{{ ansible_env.HOME }}/.ssh/id_rsa"
     size: 4096
 
 - name: Copy id
+  tags: configure
   ansible.posix.authorized_key:
     user: "{{ ansible_user_id }}"
     key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"

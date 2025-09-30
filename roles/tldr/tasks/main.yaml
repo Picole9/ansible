@@ -1,14 +1,17 @@
 - name: Install packages
-  block:
-    - name: Debian specific
-      ansible.builtin.import_tasks: debian.yaml
-      when: ansible_os_family == "Debian"
-    - name: Arch specific
-      ansible.builtin.import_tasks: arch.yaml
-      when: ansible_os_family == "Archlinux"
+  tags: install
+  become: true
+  ansible.builtin.package:
+    name: tealdeer
+    state: present
 
 - name: Set config
+  tags: configure
   ansible.builtin.import_role:
     name: dotfiles
   vars:
     dotfiles_link_config: tealdeer
+
+- name: Update tldr
+  tags: update
+  ansible.builtin.shell: "tldr --update"

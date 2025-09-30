@@ -1,4 +1,12 @@
+- name: Apt upgrade
+  tags: update
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: true
+
 - name: Install packages
+  tags: install
   become: true
   ansible.builtin.apt:
     update_cache: true
@@ -15,6 +23,7 @@
       - ripgrep # grep
       - software-properties-common
 - name: Install eza # ls
+  tags: install
   block:
     - name: Check for eza
       ansible.builtin.command: apt-cache policy eza
@@ -31,26 +40,3 @@
       ansible.builtin.apt:
         name: exa
       when: "'Candidate' not in eza_exists.stdout"
-
-- name: Gather packages facts
-  ansible.builtin.package_facts:
-    manager: auto
-
-- name: Install font
-  when: "'fc-cache' in ansible_facts.packages"
-  block:
-    - name: Ensure font folder exist
-      ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/.local/share/fonts"
-        state: directory
-        mode: "0777"
-    - name: Download font
-      ansible.builtin.unarchive:
-        src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hasklig.tar.xz
-        dest: "{{ ansible_env.HOME }}/.local/share/fonts"
-        remote_src: true
-      environment:
-        http_proxy: "{{ http_proxy }}"
-        https_proxy: "{{ https_proxy }}"
-    - name: Update font-cache
-      ansible.builtin.command: "fc-cache -f"

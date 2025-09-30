@@ -1,9 +1,12 @@
-- import_playbook: site.yaml
-- name: basic server setup
+- name: basic setup
   hosts: all
-  gather_facts: true
   roles:
-    - docker
+    - common
+    - fonts
+    - tldr
+    - nvim
+    - glow
+    - fish
   environment:
     http_proxy: "{{ http_proxy }}"
     https_proxy: "{{ https_proxy }}"

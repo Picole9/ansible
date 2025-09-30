@@ -1,9 +1,8 @@
-- import_playbook: site.yaml
-- name: basic server setup
+- name: bootstrap machine
   hosts: all
-  gather_facts: true
   roles:
-    - docker
+    - users
+    - locale
   environment:
     http_proxy: "{{ http_proxy }}"
     https_proxy: "{{ https_proxy }}"

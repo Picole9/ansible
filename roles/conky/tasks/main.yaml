@@ -1,10 +1,12 @@
 - name: Install packages
+  tags: install
   become: true
   ansible.builtin.package:
     name: conky
     state: present
 
 - name: Set config
+  tags: configure
   ansible.builtin.import_role:
     name: dotfiles
   vars:

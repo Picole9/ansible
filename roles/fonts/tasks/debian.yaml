@@ -1,0 +1,19 @@
+- name: Gather packages facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Install font
+  when: "'fc-cache' in ansible_facts.packages"
+  block:
+    - name: Ensure font folder exist
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/fonts"
+        state: directory
+        mode: "0777"
+    - name: Download font
+      ansible.builtin.unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hasklig.tar.xz
+        dest: "{{ ansible_env.HOME }}/.local/share/fonts"
+        remote_src: true
+    - name: Update font-cache
+      ansible.builtin.command: "fc-cache -f"

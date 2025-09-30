@@ -1,0 +1,6 @@
+- name: Install packages
+  become: true
+  community.general.pacman:
+    update_cache: true
+    name:
+      - otf-hasklig-nerd # nerdfont

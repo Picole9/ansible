@@ -1,4 +1,5 @@
 - name: Install packages
+  tags: install
   block:
     - name: Debian specific
       ansible.builtin.import_tasks: debian.yaml
@@ -8,17 +9,22 @@
       when: ansible_os_family == "Archlinux"
 
 - name: Check docker is active
+  tags: install
   become: true
   ansible.builtin.service:
     name: docker
     state: started
     enabled: true
+
 - name: Ensure group "docker"
+  tags: configure
   become: true
   ansible.builtin.group:
     name: docker
     state: present
+
 - name: Adding user to docker group
+  tags: configure
   become: true
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"

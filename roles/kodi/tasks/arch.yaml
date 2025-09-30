@@ -19,9 +19,6 @@
       get_url:
         url: https://vlc-bluray.whoknowsmy.name/files/KEYDB.cfg
         dest: "{{ ansible_env.HOME }}/.config/aacs/KEYDB.cfg"
-      environment:
-        http_proxy: "{{ http_proxy }}"
-        https_proxy: "{{ https_proxy }}"
 # install aur:
 # kodi-pvr-addon-iptvsimple
 # -----------

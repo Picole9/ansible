@@ -16,9 +16,6 @@
         dest: /etc/apt/keyrings/charm.asc
         mode: "0644"
         force: true
-      environment:
-        http_proxy: "{{ http_proxy }}"
-        https_proxy: "{{ https_proxy }}"
     - name: Add charm repo
       become: true
       ansible.builtin.apt_repository:

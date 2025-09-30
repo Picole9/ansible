@@ -1,4 +1,5 @@
 - name: Install packages
+  tags: install
   block:
     - name: Debian specific
       ansible.builtin.import_tasks: debian.yaml
@@ -8,38 +9,41 @@
       when: ansible_os_family == "Archlinux"
 
 - name: Determine install location
+  tags: always
   ansible.builtin.command: which fish
   register: fish
   changed_when: false
 
 - name: Set default shell
+  tags: configure
   become: true
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: "{{ fish.stdout }}"
 
 - name: Set config
+  tags: configure
   ansible.builtin.import_role:
     name: dotfiles
   vars:
     dotfiles_link_config: fish
 
 - name: Check if fisher is installed
+  tags: always
   ansible.builtin.stat:
     path: "{{ ansible_env.HOME }}/.config/fish/functions/fisher.fish"
   register: fisher_installed
 
-- name: Install fisher
+- name: Fisher
   block:
     - name: Install fisher
+      tags: install
       when: not fisher_installed.stat.exists
       ansible.builtin.shell: "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
       args:
         executable: "{{ fish.stdout }}"
-      environment:
-        http_proxy: "{{ http_proxy }}"
-        https_proxy: "{{ https_proxy }}"
     - name: Ensure fisher plugins list
+      tags: install
       when: not fisher_installed.stat.exists
       ansible.builtin.git:
         repo: "{{ dotfiles_repo_url }}"
@@ -47,13 +51,14 @@
         version: main
         force: true
     - name: Update fisher
+      tags:
+        - install
+        - update
       ansible.builtin.shell: fisher update
       args:
         executable: "{{ fish.stdout }}"
-      environment:
-        http_proxy: "{{ http_proxy }}"
-        https_proxy: "{{ https_proxy }}"
     - name: Configure theme
+      tags: configure
       ansible.builtin.shell: "{{ item }}"
       args:
         executable: "{{ fish.stdout }}"

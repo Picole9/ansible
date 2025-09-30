@@ -1,9 +1,0 @@
-- name: install common packages
-  hosts: all
-  roles:
-    - update
-    - common
-    - tldr
-    - nvim
-    - glow
-    - fish
