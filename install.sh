@@ -3,10 +3,10 @@
 # detect os
 if [ -f /etc/os-release ]; then
     . /etc/os-release
-    if [ -v $ID_LIKE ]; then
-        OS=$ID_LIKE
-    else
+    if [[ -z $ID_LIKE ]]; then
         OS=$ID
+    else
+        OS=$ID_LIKE
     fi
 else
     OS=$(uname -s)
