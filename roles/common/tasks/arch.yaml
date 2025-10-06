@@ -12,14 +12,17 @@
     update_cache: true
     name:
       - bat # cat
+      - base-devel
       - bind # dnsutilities like nslookup
       - btop # htop
-      - ca-certificates
       - curl
       - eza # ls
       - fd # find
+      - fzf
       - git
       - gnupg
+      - jq # json
+      - lazygit
       - logrotate
       - man-db
       - man-pages
@@ -30,3 +33,4 @@
       - python-pip
       - ripgrep # grep
       - wget
+      - zoxide

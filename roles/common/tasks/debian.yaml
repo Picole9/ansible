@@ -13,15 +13,18 @@
     name:
       - bat # cat
       - btop # htop
-      - ca-certificates
       - curl
       - fd-find # find
+      - fzf
       - git
       - gnupg
+      - jq
+      # - lazygit
       - python3-pip
       - python3-venv
       - ripgrep # grep
       - software-properties-common
+      - zoxide
 - name: Install eza # ls
   tags: install
   block:
