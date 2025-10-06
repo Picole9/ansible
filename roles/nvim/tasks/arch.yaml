@@ -2,12 +2,15 @@
   community.general.pacman:
     name:
       - curl
+      - fd
+      - fzf
       - git
       - gzip
       - neovim
       - npm
+      - python-neovim
+      - ripgrep
       - tar
-      - universal-ctags
       - unzip
     state: present
   become: true

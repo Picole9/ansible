@@ -9,12 +9,15 @@
       ansible.builtin.apt:
         name:
           - curl
+          - fd-find
+          - fzf
           - git
           - gzip
           - neovim
           - npm
+          - python-pynvim
+          - ripgrep
           - tar
-          - universal-ctags
           - unzip
         state: present
         update_cache: true
