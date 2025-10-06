@@ -22,7 +22,7 @@ debian)
     ansible-galaxy collection install community.general
     ;;
 arch)
-    sudo pacman -Sy ansible
+    sudo -E pacman -Sy ansible
     ansible-galaxy collection install community.general
     ;;
 *)
