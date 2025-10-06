@@ -12,7 +12,7 @@
     mode: "0777"
 
 - name: Link config
-  when: dotfiles_link_config
+  when: dotfiles_link_config is defined
   block:
     - name: Ensure all configured dotfiles are links.
       ansible.builtin.command: "ls -F {{ ansible_env.HOME }}/.config/{{ dotfiles_link_config }}"
