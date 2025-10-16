@@ -1,0 +1,9 @@
+- name: Install packages
+  tags: install
+  block:
+    # - name: Debian specific
+    #   ansible.builtin.import_tasks: debian.yaml
+    #   when: ansible_os_family == "Debian"
+    - name: Arch specific
+      ansible.builtin.import_tasks: arch.yaml
+      when: ansible_os_family == "Archlinux"

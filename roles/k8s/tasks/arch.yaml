@@ -1,0 +1,15 @@
+- name: Install packages
+  tags: install
+  become: true
+  community.general.pacman:
+    update_cache: true
+    name:
+      - k9s
+      - kubectl
+      - minikube
+- name: Install AUR packages
+  tags: install
+  community.general.pacman:
+    executable: yay
+    name:
+      - kubecolor
